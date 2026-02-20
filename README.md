@@ -2,8 +2,6 @@
 
 Let your AI agents spend money safely. AgentPay adds a human approval layer with Telegram notifications and an auditable SQLite log.
 
-![Screenshot placeholder](./docs/screenshot.png)
-
 ## Quick start
 
 ```bash
