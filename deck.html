@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AgentPay - AI Agent Payment Framework</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/black.css">
+    <style>
+        .reveal {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        }
+        
+        .reveal .slides section {
+            text-align: left;
+            padding: 40px;
+        }
+        
+        .reveal h1, .reveal h2, .reveal h3 {
+            color: #ffffff;
+            font-weight: 700;
+            text-transform: none;
+            line-height: 1.2;
+        }
+        
+        .reveal h1 {
+            font-size: 3.5em;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5em;
+        }
+        
+        .reveal h2 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 1em;
+        }
+        
+        .reveal h3 {
+            font-size: 1.8em;
+            color: #ffffff;
+            margin-bottom: 0.8em;
+        }
+        
+        .reveal p, .reveal li {
+            font-size: 1.4em;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.4;
+            margin-bottom: 0.8em;
+        }
+        
+        .reveal .subtitle {
+            font-size: 1.6em;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            margin-top: -0.5em;
+            margin-bottom: 2em;
+        }
+        
+        .reveal .big-number {
+            font-size: 4em;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+            margin: 0.5em 0;
+        }
+        
+        .reveal .highlight {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .reveal .code {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 2em;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 1.2em;
+            color: #ffffff;
+            margin: 1em 0;
+            overflow-x: auto;
+        }
+        
+        .reveal .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2em;
+            margin: 2em 0;
+        }
+        
+        .reveal .feature-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 16px;
+            padding: 2em;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .reveal .feature-icon {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+        }
+        
+        .reveal .feature-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 0.5em;
+        }
+        
+        .reveal .feature-desc {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.3;
+        }
+        
+        .reveal .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3em;
+            align-items: center;
+        }
+        
+        .reveal .problem-stat {
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-left: 4px solid #ef4444;
+            padding: 1.5em;
+            margin: 1em 0;
+            border-radius: 8px;
+        }
+        
+        .reveal .solution-stat {
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
+            border-left: 4px solid #22c55e;
+            padding: 1.5em;
+            margin: 1em 0;
+            border-radius: 8px;
+        }
+        
+        .reveal .architecture {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 16px;
+            padding: 2em;
+            margin: 2em 0;
+            text-align: center;
+        }
+        
+        .reveal .flow-step {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1em 1.5em;
+            margin: 0.5em;
+            border-radius: 25px;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .reveal .flow-step::after {
+            content: "→";
+            position: absolute;
+            right: -1.5em;
+            color: #667eea;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .reveal .flow-step:last-child::after {
+            display: none;
+        }
+        
+        .reveal .competitor {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5em;
+            margin: 1em 0;
+        }
+        
+        .reveal .competitor-logo {
+            font-size: 2em;
+            margin-right: 1em;
+        }
+        
+        .reveal .competitor-name {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 1.3em;
+        }
+        
+        .reveal .competitor-status {
+            margin-left: auto;
+            color: #ef4444;
+            font-weight: 600;
+        }
+        
+        .reveal .market-size {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-radius: 20px;
+            padding: 3em;
+            margin: 2em 0;
+        }
+        
+        .reveal .progress-section {
+            text-align: center;
+        }
+        
+        .reveal .title-slide {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+        }
+        
+        .reveal .closing-slide {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .reveal .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2em;
+            margin: 2em 0;
+        }
+        
+        .reveal .team-member {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2em;
+        }
+        
+        .reveal .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .reveal .ask-amount {
+            font-size: 5em;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin: 1em 0;
+        }
+        
+        .reveal .controls {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .reveal .progress {
+            color: #667eea;
+        }
+        
+        .reveal .slides section[data-background-gradient] {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <!-- Title Slide -->
+            <section class="title-slide" data-background-gradient="linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)">
+                <h1>AgentPay</h1>
+                <p class="subtitle">AI Agent Payment Framework</p>
+                <p style="color: rgba(255, 255, 255, 0.6); margin-top: 2em;">Enabling AI agents to spend money safely</p>
+            </section>
+
+            <!-- Problem Slide -->
+            <section>
+                <h2>The Problem</h2>
+                <div class="problem-stat">
+                    <h3>AI agents can't spend money safely</h3>
+                    <p>Current agents are either completely blocked from payments or have dangerous unrestricted access.</p>
+                </div>
+                <div class="problem-stat">
+                    <h3>No middle ground exists</h3>
+                    <p>Developers want controlled spending but have no infrastructure to build it.</p>
+                </div>
+                <div class="problem-stat">
+                    <h3>Manual approval kills automation</h3>
+                    <p>Every transaction requiring human intervention defeats the purpose of AI agents.</p>
+                </div>
+            </section>
+
+            <!-- Market Size Slide -->
+            <section>
+                <h2>Market Size</h2>
+                <div class="market-size">
+                    <div class="big-number">$25B</div>
+                    <p>AI Agent market by 2030</p>
+                </div>
+                <div class="two-column">
+                    <div>
+                        <h3>Every agent needs payments</h3>
+                        <ul>
+                            <li>Personal assistants ordering food</li>
+                            <li>Business agents buying software</li>
+                            <li>Research bots accessing APIs</li>
+                            <li>Shopping agents making purchases</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Massive TAM</h3>
+                        <ul>
+                            <li><span class="highlight">100M+</span> AI agents by 2028</li>
+                            <li><span class="highlight">$500/month</span> average spending per agent</li>
+                            <li><span class="highlight">$600B</span> annual transaction volume</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Solution Slide -->
+            <section>
+                <h2>Solution: 3 Authorization Models</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-title">Pre-authorized</div>
+                        <div class="feature-desc">Human approves before agent acts. Like DoorDash driver cards.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔔</div>
+                        <div class="feature-title">Request-approve</div>
+                        <div class="feature-desc">Agent pings human mid-task. Like Apple Cash for kids.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-title">Policy-based</div>
+                        <div class="feature-desc">Set rules like "$50/day food." Agent auto-approves within policy.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works Slide -->
+            <section>
+                <h2>How It Works</h2>
+                <div class="architecture">
+                    <h3>Technical Architecture</h3>
+                    <div style="margin: 2em 0;">
+                        <div class="flow-step">AI Agent</div>
+                        <div class="flow-step">AgentPay API</div>
+                        <div class="flow-step">Policy Engine</div>
+                        <div class="flow-step">Card Network</div>
+                        <div class="flow-step">Merchant</div>
+                    </div>
+                    <p style="margin-top: 2em; color: rgba(255, 255, 255, 0.7);">Real-time auth webhooks • Instant approval/denial • Full audit trail</p>
+                </div>
+            </section>
+
+            <!-- Built On Existing Rails Slide -->
+            <section>
+                <h2>Built On Existing Rails</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Virtual Card Infrastructure</h3>
+                        <ul>
+                            <li><span class="highlight">Stripe Issuing</span> - Developer-first</li>
+                            <li><span class="highlight">Lithic</span> - Modern stack</li>
+                            <li><span class="highlight">Marqeta</span> - Enterprise scale</li>
+                        </ul>
+                        <br>
+                        <p>We don't rebuild payment rails. We add the AI control layer.</p>
+                    </div>
+                    <div>
+                        <div class="solution-stat">
+                            <h3>Real-time Auth Webhooks</h3>
+                            <p>Sub-100ms decision making on every transaction attempt.</p>
+                        </div>
+                        <div class="solution-stat">
+                            <h3>Instant Card Provisioning</h3>
+                            <p>New agent wallets created in seconds via API.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The API Slide -->
+            <section>
+                <h2>The API</h2>
+                <p style="margin-bottom: 2em;">Developer-first design. 3 lines of code to create an agent wallet:</p>
+                <div class="code">
+agentpay.wallets.create({
+  agent_id: "kai-assistant",
+  spending_limit: 500,
+  policies: ["food_delivery_50_daily"]
+})
+
+// Returns virtual card instantly
+// Real-time spending notifications
+// Policy enforcement automated
+                </div>
+                <p>Full REST API • Webhooks • SDKs for Python, Node.js, Go</p>
+            </section>
+
+            <!-- Business Model Slide -->
+            <section>
+                <h2>Business Model</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Revenue Streams</h3>
+                        <ul>
+                            <li><span class="highlight">$2/month</span> per agent wallet</li>
+                            <li><span class="highlight">0.5%</span> interchange on transactions</li>
+                            <li><span class="highlight">Premium</span> features (analytics, ML policies)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Unit Economics</h3>
+                        <div class="big-number" style="font-size: 2.5em;">$47</div>
+                        <p style="text-align: center;">Monthly revenue per agent at $500 spend volume</p>
+                    </div>
+                </div>
+                <div class="solution-stat" style="margin-top: 2em;">
+                    <h3>High-margin SaaS with payment economics</h3>
+                    <p>80%+ gross margins on subscription revenue, payment revenue scales with usage</p>
+                </div>
+            </section>
+
+            <!-- Competitive Landscape Slide -->
+            <section>
+                <h2>Competitive Landscape</h2>
+                <h3 style="margin-bottom: 1.5em;">Why no one does this yet:</h3>
+                
+                <div class="competitor">
+                    <div class="competitor-logo">🏦</div>
+                    <div>
+                        <div class="competitor-name">Traditional Banks</div>
+                        <div style="color: rgba(255, 255, 255, 0.7);">Don't understand AI agents</div>
+                    </div>
+                    <div class="competitor-status">Too slow</div>
+                </div>
+
+                <div class="competitor">
+                    <div class="competitor-logo">💳</div>
+                    <div>
+                        <div class="competitor-name">Fintech Startups</div>
+                        <div style="color: rgba(255, 255, 255, 0.7);">Focus on human users</div>
+                    </div>
+                    <div class="competitor-status">Wrong market</div>
+                </div>
+
+                <div class="competitor">
+                    <div class="competitor-logo">🤖</div>
+                    <div>
+                        <div class="competitor-name">AI Companies</div>
+                        <div style="color: rgba(255, 255, 255, 0.7);">Don't want payment complexity</div>
+                    </div>
+                    <div class="competitor-status">Not core business</div>
+                </div>
+
+                <p style="margin-top: 2em; color: #22c55e; font-weight: 600; font-size: 1.2em;">
+                    Perfect timing: AI adoption accelerating, payment infrastructure mature, no direct competitors.
+                </p>
+            </section>
+
+            <!-- Go-to-Market Slide -->
+            <section>
+                <h2>Go-to-Market Strategy</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>Primary Targets</h3>
+                        <ul>
+                            <li><span class="highlight">OpenAI</span> - ChatGPT plugins</li>
+                            <li><span class="highlight">Anthropic</span> - Claude integrations</li>
+                            <li><span class="highlight">LangChain</span> - Agent frameworks</li>
+                            <li><span class="highlight">AutoGPT</span> - Autonomous agents</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Launch Strategy</h3>
+                        <ul>
+                            <li>Partner with top 5 agent platforms</li>
+                            <li>Developer-first approach</li>
+                            <li>Free tier for experimentation</li>
+                            <li>Premium for production use</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="solution-stat" style="margin-top: 2em;">
+                    <h3>Land and expand</h3>
+                    <p>Start with individual developers, grow into enterprise AI deployments</p>
+                </div>
+            </section>
+
+            <!-- Team Slide -->
+            <section>
+                <h2>Team</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-avatar">T</div>
+                        <h3>Toan Nguyen</h3>
+                        <p>CEO • Former Stripe PM</p>
+                        <p style="font-size: 1rem; color: rgba(255, 255, 255, 0.6);">Built payment systems for 500M+ users</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar">?</div>
+                        <h3>CTO • TBH</h3>
+                        <p>AI/ML + Fintech</p>
+                        <p style="font-size: 1rem; color: rgba(255, 255, 255, 0.6);">Looking for co-founder with AI agent experience</p>
+                    </div>
+                </div>
+                <div style="margin-top: 2em;">
+                    <h3>Advisory</h3>
+                    <ul>
+                        <li>Former Stripe executives (payments)</li>
+                        <li>OpenAI researchers (AI agents)</li>
+                        <li>Fintech VCs (market access)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- The Ask Slide -->
+            <section class="closing-slide">
+                <h2>The Ask</h2>
+                <div class="ask-amount">$3M</div>
+                <p style="text-align: center; font-size: 1.2em; margin-bottom: 2em;">Seed Round</p>
+                
+                <div class="two-column">
+                    <div>
+                        <h3>Use of Funds</h3>
+                        <ul>
+                            <li><span class="highlight">40%</span> Engineering team</li>
+                            <li><span class="highlight">30%</span> Partnership development</li>
+                            <li><span class="highlight">20%</span> Compliance & security</li>
+                            <li><span class="highlight">10%</span> Operations</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>18-Month Milestones</h3>
+                        <ul>
+                            <li>5 major platform integrations</li>
+                            <li>10,000+ active agent wallets</li>
+                            <li>$10M+ transaction volume</li>
+                            <li>Series A ready ($15M+)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; color: #667eea; font-weight: 600; font-size: 1.3em; margin-top: 2em;">
+                    The AI agent economy is here. AgentPay is the infrastructure to power it.
+                </p>
+            </section>
+
+            <!-- Thank You Slide -->
+            <section class="closing-slide" data-background-gradient="linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)">
+                <h1 style="font-size: 4em;">Thank You</h1>
+                <p class="subtitle">Questions?</p>
+                <div style="margin-top: 3em;">
+                    <p style="color: rgba(255, 255, 255, 0.7);">toan@agentpay.com</p>
+                    <p style="color: rgba(255, 255, 255, 0.7);">Demo: agentpay.com/demo</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            controls: true,
+            progress: true,
+            center: false,
+            touch: true,
+            loop: false,
+            rtl: false,
+            shuffle: false,
+            fragments: true,
+            embedded: false,
+            help: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            preloadIframes: null,
+            autoSlide: 0,
+            autoSlideStoppable: true,
+            mouseWheel: false,
+            hideInactiveCursor: true,
+            hideCursorTime: 5000,
+            previewLinks: false,
+            focusBodyOnPageVisibilityChange: true,
+            viewDistance: 3,
+            mobileViewDistance: 2,
+            display: 'block',
+            hideAddressBar: true,
+            dependencies: []
+        });
+    </script>
+</body>
+</html>
